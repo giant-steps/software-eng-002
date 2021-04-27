@@ -10,18 +10,15 @@ Alice quer saber se sua estratégia está dando bons resultados, e por isso prec
 
 ## Especificações
 
-Seu programa produzirá para Alice um relatório sobre sua estratégia contendo a evolução patrimonial e
-rentabilidade acumulada dela para um determinado período com uma taxa de amostragem em minutos. O programa terá como entrada um patrimônio inicial (número decimal) e três arquivos CSV: o Arquivo de
-Operações (`trades.csv`) e os Arquivos de Preços (`pricesA.csv` e `pricesB.csv`).
+Seu programa receberá como parâmetros uma `data inicial`, uma `data final` e um `tamanho de janela`, e baseado neles produzirá o relatório desejado por Alice.
 
-### Capital Inicial
+O relatório deverá conter duas informações essenciais: a Evolução Patrimonial e a Rentabilidade Acumulada. Essas informações serão mostradas no relatório a partir da `data inicial` e até a `data final` em intervalos regulares de tempo (o tamanho desses intervalos é dado em minutos pelo `tamanho da janela`, que é um número inteiro).
 
-É o valor financeiro, em dinheiro, que Alice iniciou suas operações. Ao longo do tempo, ela utiliza esse dinheiro em caixa para comprar os ativos, isto é, para cada registro de compra, subtrai-se o valor em caixa e quando vende adiciona.
-**Para este desafio considere que Alice iniciou com R$100.000,00 de capital inicial.**
+Considere que a `data inicial` e a `data final` estarão sempre no mês de março de 2021, que é o período para o qual você terá dados sobre a estratégia de Alice. Os dados estão em arquivos deste repositório: um Arquivo de Operações e dois Arquivos de Preços, que serão detalhados a seguir.
 
 ### Arquivo de operações
 
-O arquivo de operações (`trades.csv`) descreve as operações de compras e vendas feitas por Alice dos ativos A e B durante o período todo. Ele possui uma linha por operação feita no dia e 5 colunas:
+O arquivo de operações (`march_2021_trades.csv`) descreve as operações de compras e vendas feitas por Alice dos ativos A e B durante o período todo (março de 2021). Ele possui uma linha por operação feita no dia e 5 colunas:
 1. **time** - horário da operação no formato "AAAA-MM-DD HH:MM:SS";
 2. **symbol** - "A" ou "B", especificando o ativo operado;
 3. **side** - "BUY" ou "SELL", dizendo se Alice comprou ou vendeu o ativo especificado na coluna anterior;
@@ -30,37 +27,39 @@ O arquivo de operações (`trades.csv`) descreve as operações de compras e ven
 
 ### Arquivos de preços
 
-Os arquivos de preços descrevem os preços de mercado dos ativos A e B ao longo do período. 
-A taxa de amostragem de preço é de um minuto, isto é, uma linha para cada minuto e contendo 2 colunas:
+Os arquivos de preços descrevem os preços de mercado dos ativos A e B ao longo do período todo (março de 2021).
+A taxa de amostragem de preço é de uma linha por minuto, e o arquivo contém 2 colunas:
 1. **time** - horário da cotação do ativo no formato "AAAA-MM-DD HH:MM:SS" e
 2. **price** - número decimal - preço do ativo em Reais no minuto especificado
    na coluna `time`.
 
-Os preços dados em cada linha desse arquivo valem do segundo 0 do minuto `time`
-até o segundo 59 do mesmo minuto (esta é uma simplificação - preços de ativos
-financeiros no mundo real podem variar muitas vezes por segundo).
+Considere que os preços dados em cada linha desse arquivo valem do segundo 0 do minuto `time` até o segundo 59 do mesmo minuto (esta é uma simplificação - preços de ativos financeiros no mundo real podem variar muitas vezes por segundo).
 
-Assuma que os arquivos serão sempre íntegros e que seu programa não precisará
-verificar inconsistências nos preços.
+Assuma que os arquivos serão sempre íntegros e que seu programa não precisará verificar inconsistências nos preços.
 
 ## Relatório de Evolução de Patrimônio Total e Rentabilidade Acumulada
 
 Conforme dito anteriormente, a saída do seu programa será a evolução de patrimônio total de Alice ao longo do período e o retorno acumulado.
 
-O cálculo do patrimônio total e do retorno acumulado deve ocorrer em uma taxa de amostragem parametrizável, isto é, ser em janelas regulares de tempo.
 
-Considere que o tamanho da janela de tempo será dado em minutos.
+O cálculo do patrimônio total e do retorno acumulado deve ocorrer em intervalos regulares de duração parametrizável (dada em minutos pelo parâmetro inteiro `tamanho da janela`).
+
+### Dinheiro em caixa
+
+É o valor financeiro, em reais, que Alice tem disponível para realizar suas operações. Ao longo do tempo, ela utiliza esse dinheiro em caixa para comprar os ativos. Isto é, para cada registro de compra, subtrai-se do dinheiro em caixa o valor total da compra, e para cada registro de venda, adiciona-se ao dinheiro em caixa o valor total da venda.
+
+**Para este desafio, considere que Alice iniciou o mês de março com R$100.000,00 de dinheiro em caixa.**
 
 ### Cáculo do Patrimônio Total
 
-O Patrimônio Total representa o valor em dinheiro que Alice tem em caixa, somado aos valores da carteira de ativos (`preçoA(t) * unidadesA(t) + preçoB(t) * unidadesB(t)` no caso de Alice, sendo `preçoX(t)` o preço do ativo X para o instante t e `unidadesX(t)` a quantidade de ativos X presentes na carteira de Alice no mesmo instante).
+O Patrimônio Total representa o dinheiro que Alice tem em caixa somado ao valor da carteira de ativos (valor este dado por `preçoA(t) * unidadesA(t) + preçoB(t) * unidadesB(t)`, sendo `preçoX(t)` o preço do ativo X para o instante t e `unidadesX(t)` a quantidade de ativos X presentes na carteira de Alice no mesmo instante).
 
-Por exemplo: se Alice iniciou o dia com R$ 10 e comprou no dia 2 unidades do ativo A e uma unidade do ativo B por um total de R$ 7, ela, ao fim do dia, terá em dinheiro R$ 3,00. Suponha que os preços dos ativos A e B no fim do dia eram R$ 4 e R$ 5, respectivamente. Então o valor da carteira de ativos de Alice no fim do dia é de `2 * R$4 + 1 * R$5 = R$13` e, portanto, o Patrimônio Total ao final do dia é dado por `R$3,00 + R$13,00 = R$ 16,00`.
+Por exemplo: se Alice iniciou o dia com R$ 10 e comprou no dia 2 unidades do ativo A e uma unidade do ativo B por um total de R$ 7, ela, ao fim do dia, terá em dinheiro R$ 3,00. Suponha que os preços dos ativos A e B no fim do dia eram R$ 4 e R$ 5, respectivamente. Então o valor da carteira de ativos de Alice no fim do dia é de `2 * R$4 + 1 * R$5 = R$13` e, portanto, o Patrimônio Total ao final do dia é `R$3,00 + R$13,00 = R$16,00`.
 
 ### Cálculo da Rentabilidade Acumulada
 
 A Rentabilidade Acumulada representa a variação percentual do Patrimônio Total dentro de uma
-janela de tempo (entre t0 e t1), o cálculo então seria: `rent_acumulada(t1) = (patrimonio_total(t1) / patrimonio_total(t0)) - 1)`.
+janela de tempo (entre t0 e t1). O cálculo então seria: `rent_acumulada(t0, t1) = (patrimonio_total(t1) / patrimonio_total(t0)) - 1)`.
 
 Por exemplo: se Alice no instante t0 tem R$10,00 de Patrimônio Total e no instante t1 tem R$13,00 temos: `rent_acumulada(t1) = (R$13,00 / R$10,00) - 1 = 0.3 = 30%`.
 
@@ -125,7 +124,7 @@ Resumindo sua entrega deverá conter:
 * Repositório **privado** no Github com a solução
 * Solução programada em uma das 3 linguagens Python, Java ou C++
 * Testes automatizados com uma boa cobertura
-* README com instruções para execução da solução e os testes
+* README com instruções para execução da solução e dos testes
 * Responda a pergunta no README
 * Não esqueça das dependências do projeto
 
