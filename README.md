@@ -118,7 +118,7 @@ mas não obrigatoriamente, dockerizado.
 
 Adicionalmente, responda à pergunta em seu README:
 
-Considerando um patrimônio inicial de R$ 100.000,00, os arquivos de exemplo `trades.csv`, `pricesA.csv` e `pricesB.csv` e o retorno que Alice conseguiu com os seus trades nesse período, seria melhor para Alice se ela tivesse comprado no início do dia 100% do seu dinheiro no ativo A ou 100% no ativo B ao invés de ter operado ao longo do dia como ela operou? Justifique sua resposta.
+Considerando um patrimônio inicial de R$ 100.000,00, os arquivos de exemplo `march_2021_trades.csv`, `march_2021_pricesA.csv` e `march_2021_pricesB.csv` e o retorno que Alice conseguiu com os seus trades nesse período, seria melhor para Alice se ela tivesse comprado no início do dia 100% do seu dinheiro no ativo A ou 100% no ativo B ao invés de ter operado ao longo do dia como ela operou? Justifique sua resposta.
 
 Resumindo sua entrega deverá conter:
 * Repositório **privado** no Github com a solução
